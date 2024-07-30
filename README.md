@@ -100,3 +100,8 @@ Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando
 
 - Identificar entidades principais que agregam eventos (agregados).
 - Adicionar agregados no mural e associar eventos a eles.
+  
+<aside>
+⚠️ Colocar foto
+
+</aside>
