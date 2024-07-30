@@ -33,4 +33,70 @@ O projeto consiste no desenvolvimento de uma API destinada à análise de fatura
 - Pessoas interessadas em melhorar sua educação financeira e aprender sobre investimentos seguros.
 - Usuários que buscam uma ferramenta prática e personalizada para gerenciar seus gastos e planejar seu orçamento mensal.
 
-[Event Storming](Event%20Storming%20a732f8b649a046e8958d2fca5d2dd93c.md)
+
+
+# Event Storming
+
+## **Preparação**
+
+Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando
+
+## **Identificação dos Eventos**
+
+<aside>
+⚠️ Colocar foto
+
+</aside>
+
+## **Organização dos Eventos**
+
+- Agrupar eventos relacionados e organizar na sequência correta.
+- Identificar e remover duplicatas ou eventos desnecessários.
+
+<aside>
+⚠️ Colocar foto
+
+</aside>
+
+## Identificar Pontos de Atenção
+
+- Identificar possíveis problemas ou regras de negocios que devem ser estabelecidas
+
+<aside>
+⚠️ Colocar foto
+
+</aside>
+
+## Aplicar Elementos Pivotais
+
+- Identificar mudanças de estado ou mudanças de estados
+
+<aside>
+⚠️ Colocar foto
+
+</aside>
+
+## Colocar Ator, Comando e Politica
+
+- Identificar ações que iniciam eventos (comandos do usuário ou do sistema).
+- Conectar comandos aos eventos correspondentes.
+
+<aside>
+⚠️ Colocar foto
+
+</aside>
+
+## **Definição de Modelos de Leitura**
+
+- Definir os modelos de leitura que serão usados para consultas e visualização de dados.
+- Associar os eventos que atualizam esses modelos de leitura.
+
+<aside>
+⚠️ Colocar foto
+
+</aside>
+
+## **Definição de Agregados**
+
+- Identificar entidades principais que agregam eventos (agregados).
+- Adicionar agregados no mural e associar eventos a eles.
