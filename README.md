@@ -55,7 +55,9 @@ Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando Aragão
 - Identificar e remover duplicatas ou eventos desnecessários.
 
 <aside>
+    
 ![image](https://github.com/user-attachments/assets/1b4b472c-ac78-4290-9877-d10d45c9838f)
+
 </aside>
 
 ## Identificar Pontos de Atenção
@@ -63,7 +65,9 @@ Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando Aragão
 - Identificar possíveis problemas ou regras de negocios que devem ser estabelecidas
 
 <aside>
+    
 ![image](https://github.com/user-attachments/assets/0c52dfe6-10e8-4fd5-ba15-b62f14f0394e)
+
 </aside>
 
 ## Aplicar Elementos Pivotais
@@ -71,7 +75,9 @@ Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando Aragão
 - Identificar mudanças de estado ou mudanças de estados
 
 <aside>
+    
 ![image](https://github.com/user-attachments/assets/f8352b7a-545b-4328-8c24-7a1e1dbc3da1)
+
 </aside>
 
 ## Colocar Ator, Comando e Politica
@@ -80,7 +86,9 @@ Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando Aragão
 - Conectar comandos aos eventos correspondentes.
 
 <aside>
+    
 ![image](https://github.com/user-attachments/assets/1727aea8-1c31-4690-ae61-3730ed071626)
+
 </aside>
 
 ## **Definição de Modelos de Leitura**
@@ -89,7 +97,9 @@ Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando Aragão
 - Associar os eventos que atualizam esses modelos de leitura.
 
 <aside>
+    
 ![image](https://github.com/user-attachments/assets/be38938e-739e-4d87-a240-d0ee2de8b0c4)
+
 </aside>
 
 ## **Definição de Agregados**
