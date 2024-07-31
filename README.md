@@ -44,7 +44,7 @@ Envolvidos:
 * [Iago Gomes](https://github.com/iagoomes);
 * [Yago Souza](https://github.com/yago-souza);
 * [Suellen Lima](https://github.com/suellen002);
-* Felipe Shai;
+* [Felipe Shai](https://github.com/felipeshai);
 
 ## **Identificação dos Eventos**
 
