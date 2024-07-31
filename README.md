@@ -44,7 +44,9 @@ Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando Aragão
 ## **Identificação dos Eventos**
 
 <aside>
+    
 ![image](https://github.com/user-attachments/assets/d3149bda-fe98-46ee-a898-435734b50105)
+
 </aside>
 
 ## **Organização dos Eventos**
