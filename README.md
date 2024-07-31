@@ -39,7 +39,7 @@ O projeto consiste no desenvolvimento de uma API destinada à análise de fatura
 
 ## **Preparação**
 
-Envolvidos: Suellen Lima, Iago Gomes, Felipe Shai, Yago Souza, Fernando Aragão
+Envolvidos: Suellen Lima, Iago Gomes, Felipe Shai, Yago Souza, Fernando Aragão @fernandoarag
 
 ## **Identificação dos Eventos**
 
