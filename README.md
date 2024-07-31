@@ -39,12 +39,21 @@ O projeto consiste no desenvolvimento de uma API destinada à análise de fatura
 
 ## **Preparação**
 
-Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando
+Envolvidos: Suellen, Iago Gomes, Shai, Yago, Fernando Aragão
 
 ## **Identificação dos Eventos**
 
-<aside>
-⚠️ Colocar foto
+![image](https://github.com/user-attachments/assets/d3149bda-fe98-46ee-a898-435734b50105)
+    
+![image](https://github.com/user-attachments/assets/1b4b472c-ac78-4290-9877-d10d45c9838f)
+
+![image](https://github.com/user-attachments/assets/0c52dfe6-10e8-4fd5-ba15-b62f14f0394e)
+
+![image](https://github.com/user-attachments/assets/f8352b7a-545b-4328-8c24-7a1e1dbc3da1)
+
+![image](https://github.com/user-attachments/assets/1727aea8-1c31-4690-ae61-3730ed071626)
+
+![image](https://github.com/user-attachments/assets/be38938e-739e-4d87-a240-d0ee2de8b0c4)
 
 </aside>
 
