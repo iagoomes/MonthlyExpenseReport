@@ -113,6 +113,7 @@ Envolvidos:
 - Adicionar agregados no mural e associar eventos a eles.
   
 <aside>
-⚠️ Colocar foto
-
+    
+![image](https://github.com/user-attachments/assets/0ab9da93-5886-488c-93fb-fb9811c32451)
+    
 </aside>
