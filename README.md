@@ -1,6 +1,5 @@
 # MonthlyExpenseReport
 Tech challenge fase 1
-3
 
 ### Visão Geral
 
