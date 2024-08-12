@@ -1,22 +1,32 @@
 package br.com.postech.grupo7.monthlyexpensereport.controller;
 
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.Payment;
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.PaymentRepository;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.*;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoiceRequest.InvoiceRequestDTO;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
 @RequestMapping("payments")
 @RequiredArgsConstructor
 public class PaymentController {
-    private final PaymentRepository paymentRepository;
 
-    @GetMapping
-    public List<Payment> findAll() {
-        return paymentRepository.findAll();
+    private final PaymentService paymentService;
+
+    @PostMapping("/invoiceRequests")
+    public ResponseEntity<String> saveInvoiceRequest(@RequestBody @Valid InvoiceRequestDTO invoiceRequestDTO) {
+        return paymentService.saveInvoiceRequest(invoiceRequestDTO);
+    }
+
+    @PostMapping
+    public ResponseEntity<String> savePayment(@RequestBody @Valid PaymentDTO paymentDTO) {
+        return paymentService.savePayment(paymentDTO);
+    }
+
+    @GetMapping("{paymentId}")
+    public ResponseEntity<String> getStatus(@PathVariable Integer paymentId) {
+        return paymentService.getStatus(paymentId);
     }
 }
