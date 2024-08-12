@@ -1,6 +1,5 @@
 package br.com.postech.grupo7.monthlyexpensereport.domain.payment;
 
-import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -17,10 +16,10 @@ public class Payment {
     private Integer id;
 
     @ManyToOne
-    @JoinColumn(name = "customer_id", nullable = false)
-    private Customer customer;
+    @JoinColumn(name = "invoice_request_id", nullable = false)
+    private InvoiceRequest invoiceRequest;
 
-    @Column(name = "amount", nullable = false, precision = 10, scale = 2)
+    @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
     @Column(name = "payment_date", nullable = false)
@@ -30,5 +29,8 @@ public class Payment {
     private String paymentMethod;
 
     @Column(name = "status", nullable = false, length = 20)
-    private String status;
+    private String status = "Pending";
+
+    @Column(name = "token_count", nullable = false)
+    private Integer tokenCount = 0;
 }
