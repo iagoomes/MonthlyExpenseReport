@@ -1,13 +1,15 @@
-package br.com.postech.grupo7.monthlyexpensereport.domain.payment;
+package br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoiceRequest;
 
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 @Data
+@NoArgsConstructor
 @Entity
 @Table(name = "invoice_request")
 public class InvoiceRequest {
@@ -32,9 +34,14 @@ public class InvoiceRequest {
     @Column(name = "amount", nullable = false)
     private BigDecimal amount;
 
-    @Column(name = "due_date", nullable = false)
-    private LocalDate dueDate;
-
     @Column(name = "token_count", nullable = false)
     private Integer tokenCount = 0;
+
+    public InvoiceRequest(InvoiceRequestDTO invoiceRequestDTO, Customer customer) {
+        this.customer = customer;
+        this.analysisResults = invoiceRequestDTO.getAnalysisResults() == null ? null : invoiceRequestDTO.getAnalysisResults();
+        this.submittedAt = LocalDate.now();
+        this.tokenCount = invoiceRequestDTO.getTokenCount();
+    }
+
 }
