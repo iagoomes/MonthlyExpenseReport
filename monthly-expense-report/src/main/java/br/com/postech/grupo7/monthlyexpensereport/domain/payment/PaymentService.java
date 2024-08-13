@@ -2,9 +2,9 @@ package br.com.postech.grupo7.monthlyexpensereport.domain.payment;
 
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.CustomerService;
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoiceRequest.InvoiceRequest;
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoiceRequest.InvoiceRequestDTO;
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoiceRequest.InvoiceRequestRepository;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request.InvoiceRequest;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request.InvoiceRequestDTO;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request.InvoiceRequestRepository;
 import br.com.postech.grupo7.monthlyexpensereport.infra.service.PaymentChannelService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -36,7 +36,8 @@ public class PaymentService {
     }
 
     public ResponseEntity<String> savePayment(PaymentDTO paymentDTO) {
-        InvoiceRequest invoiceRequest = invoiceRequestRepository.findById(paymentDTO.getInvoiceRequestId()).orElseThrow();
+        InvoiceRequest invoiceRequest = invoiceRequestRepository.findById(paymentDTO.getInvoiceRequestId())
+                .orElseThrow();
         Payment payment = new Payment(paymentDTO, invoiceRequest);
         Payment paymentSaved = paymentRepository.save(payment);
         paymentChannelService.processPayment(paymentSaved.getId());

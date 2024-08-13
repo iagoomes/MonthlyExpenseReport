@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PaymentChannelService {
     private final PaymentRepository paymentRepository;
+
     public void processPayment(Integer paymentId) {
         Payment payment = paymentRepository.getReferenceById(paymentId);
         payment.setPaymentStatus("processed");

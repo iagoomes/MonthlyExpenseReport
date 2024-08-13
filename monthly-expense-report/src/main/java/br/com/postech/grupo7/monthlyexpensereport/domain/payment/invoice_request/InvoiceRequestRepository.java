@@ -1,4 +1,4 @@
-package br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoiceRequest;
+package br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

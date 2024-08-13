@@ -1,4 +1,4 @@
-package br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoiceRequest;
+package br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request;
 
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
 import jakarta.persistence.*;
@@ -39,7 +39,8 @@ public class InvoiceRequest {
 
     public InvoiceRequest(InvoiceRequestDTO invoiceRequestDTO, Customer customer) {
         this.customer = customer;
-        this.analysisResults = invoiceRequestDTO.getAnalysisResults() == null ? null : invoiceRequestDTO.getAnalysisResults();
+        this.analysisResults = invoiceRequestDTO.getAnalysisResults() == null ? null
+                : invoiceRequestDTO.getAnalysisResults();
         this.submittedAt = LocalDate.now();
         this.tokenCount = invoiceRequestDTO.getTokenCount();
     }
