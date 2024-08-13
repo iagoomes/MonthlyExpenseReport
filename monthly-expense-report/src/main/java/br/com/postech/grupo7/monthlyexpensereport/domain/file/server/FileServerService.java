@@ -5,8 +5,6 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
-import br.com.postech.grupo7.monthlyexpensereport.domain.customer.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,6 +13,8 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
 
+import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
+import br.com.postech.grupo7.monthlyexpensereport.domain.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,17 +25,30 @@ public class FileServerService {
     private final FileServerRepository fileServerRepository;
     private final CustomerService customerService;
 
+    public FileServer getFileById(Integer id) {
+        return fileServerRepository.findById(id).orElseThrow(() -> new RuntimeException("File not found"));
+    }
+
     public ResponseEntity<String> savePDF(Integer customerId, MultipartFile file) throws IOException {
-        final Customer customer = customerService.getCustomerById(customerId);
         validPdf(file);
-        String content = getContent(file);
-        FileServer attachment = new FileServer(file.getOriginalFilename(), content, customer);
+        final Customer customer = customerService.getCustomerById(customerId);
+        final String content = getContent(file);
+        final FileServer attachment = new FileServer(file.getOriginalFilename(), content, customer);
         fileServerRepository.save(attachment);
         return ResponseEntity.ok("Arquivo salvo com sucesso!");
     }
 
-    public FileServer getFileById(Integer id) {
-        return fileServerRepository.findById(id).orElseThrow(() -> new RuntimeException("File not found"));
+    public boolean validPdf(final MultipartFile file) throws IOException {
+        if (file.isEmpty()) {
+            throw new IOException("O arquivo está em branco!");
+        }
+        if (!Objects.equals(file.getContentType(), "application/pdf")) {
+            throw new IOException("O arquivo deve ser um PDF!");
+        }
+        if (file.getSize() > MAX_SIZE) {
+            throw new IOException("O arquivo ultrapassou o limite máximo de 30mb!");
+        }
+        return true;
     }
 
     public String getContent(MultipartFile file) throws IOException {
@@ -48,18 +61,6 @@ public class FileServerService {
 
         pdfDocument.close();
         return processContent(content.toString());
-    }
-
-    public void validPdf(final MultipartFile file) throws IOException {
-        if (file.isEmpty()) {
-            throw new IOException("O arquivo está em branco!");
-        }
-        if (!Objects.equals(file.getContentType(), "application/pdf")) {
-            throw new IOException("O arquivo deve ser um PDF!");
-        }
-        if (file.getSize() > MAX_SIZE) {
-            throw new IOException("O arquivo ultrapassou o limite máximo de 30mb!");
-        }
     }
 
     public String processContent(String content) {

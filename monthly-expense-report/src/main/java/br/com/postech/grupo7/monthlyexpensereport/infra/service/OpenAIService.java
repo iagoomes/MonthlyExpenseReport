@@ -49,7 +49,6 @@ public class OpenAIService {
                                 .put(new JSONObject()
                                                 .put("role", role)
                                                 .put("content", content));
-                final int tokens = countTokens(content);
 
                 // Criando o corpo da requisição JSON
                 final JSONObject request = new JSONObject();
