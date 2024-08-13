@@ -1,12 +1,19 @@
 package br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request;
 
-import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
-import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
+
+import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
@@ -37,12 +44,13 @@ public class InvoiceRequest {
     @Column(name = "token_count", nullable = false)
     private Integer tokenCount = 0;
 
-    public InvoiceRequest(InvoiceRequestDTO invoiceRequestDTO, Customer customer) {
+    public InvoiceRequest(
+            final InvoiceRequestDTO invoiceRequestDTO, final Customer customer, final Integer tokenCount) {
         this.customer = customer;
         this.analysisResults = invoiceRequestDTO.getAnalysisResults() == null ? null
                 : invoiceRequestDTO.getAnalysisResults();
         this.submittedAt = LocalDate.now();
-        this.tokenCount = invoiceRequestDTO.getTokenCount();
+        this.tokenCount = tokenCount;
     }
 
 }

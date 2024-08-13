@@ -1,15 +1,15 @@
 package br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request;
 
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class InvoiceRequestDTO {
     @NotNull
     private Integer customerId;
-    private String analysisResults;
     @NotNull
-    @Positive
-    private Integer tokenCount;
+    private Integer archiveId;
+    private String analysisResults;
 }
