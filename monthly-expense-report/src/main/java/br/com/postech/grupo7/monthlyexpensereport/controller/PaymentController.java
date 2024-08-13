@@ -1,7 +1,7 @@
 package br.com.postech.grupo7.monthlyexpensereport.controller;
 
 import br.com.postech.grupo7.monthlyexpensereport.domain.payment.*;
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request.InvoiceRequestDTO;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice.request.InvoiceRequestDTO;
 import br.com.postech.grupo7.monthlyexpensereport.infra.service.OpenAIService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

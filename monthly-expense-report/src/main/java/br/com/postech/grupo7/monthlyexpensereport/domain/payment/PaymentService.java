@@ -2,11 +2,11 @@ package br.com.postech.grupo7.monthlyexpensereport.domain.payment;
 
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.CustomerService;
-import br.com.postech.grupo7.monthlyexpensereport.domain.file_server.FileServer;
-import br.com.postech.grupo7.monthlyexpensereport.domain.file_server.FileServerService;
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request.InvoiceRequest;
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request.InvoiceRequestDTO;
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request.InvoiceRequestRepository;
+import br.com.postech.grupo7.monthlyexpensereport.domain.file.server.FileServer;
+import br.com.postech.grupo7.monthlyexpensereport.domain.file.server.FileServerService;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice.request.InvoiceRequest;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice.request.InvoiceRequestDTO;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice.request.InvoiceRequestRepository;
 import br.com.postech.grupo7.monthlyexpensereport.infra.service.OpenAIService;
 import br.com.postech.grupo7.monthlyexpensereport.infra.service.PaymentChannelService;
 import lombok.RequiredArgsConstructor;

@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request.InvoiceRequest;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice.request.InvoiceRequest;
 
 @Data
 @Entity

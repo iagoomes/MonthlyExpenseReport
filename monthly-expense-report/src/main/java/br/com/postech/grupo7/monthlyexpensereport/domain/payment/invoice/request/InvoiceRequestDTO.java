@@ -1,4 +1,4 @@
-package br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice_request;
+package br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice.request;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

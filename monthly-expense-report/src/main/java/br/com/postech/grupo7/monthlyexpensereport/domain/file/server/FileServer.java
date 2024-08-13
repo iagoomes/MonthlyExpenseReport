@@ -1,4 +1,4 @@
-package br.com.postech.grupo7.monthlyexpensereport.domain.file_server;
+package br.com.postech.grupo7.monthlyexpensereport.domain.file.server;
 
 import java.time.LocalDateTime;
 

@@ -15,9 +15,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.CustomerService;
-import br.com.postech.grupo7.monthlyexpensereport.domain.file_server.FileServer;
-import br.com.postech.grupo7.monthlyexpensereport.domain.file_server.FileServerRepository;
-import br.com.postech.grupo7.monthlyexpensereport.domain.file_server.FileServerService;
+import br.com.postech.grupo7.monthlyexpensereport.domain.file.server.FileServer;
+import br.com.postech.grupo7.monthlyexpensereport.domain.file.server.FileServerRepository;
+import br.com.postech.grupo7.monthlyexpensereport.domain.file.server.FileServerService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
