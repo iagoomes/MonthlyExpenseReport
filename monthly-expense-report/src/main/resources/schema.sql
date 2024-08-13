@@ -1,19 +1,17 @@
 -- Criando tabela customer
-CREATE TABLE customer
-(
-    id           INT AUTO_INCREMENT PRIMARY KEY,                                 -- Identificador único do cliente
-    first_name   VARCHAR(50)  NOT NULL,                                          -- Nome do cliente
-    last_name    VARCHAR(50)  NOT NULL,                                          -- Sobrenome do cliente
-    email        VARCHAR(100) NOT NULL UNIQUE,                                   -- E-mail do cliente, único
-    phone_number VARCHAR(20),                                                    -- Número de telefone do cliente
-    address      VARCHAR(255),                                                   -- Endereço completo do cliente
-    city         VARCHAR(50),                                                    -- Cidade do cliente
-    state        VARCHAR(50),                                                    -- Estado do cliente
-    postal_code  VARCHAR(20),                                                    -- Código postal do cliente
-    country      VARCHAR(50),                                                    -- País do cliente
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,                            -- Data e hora de criação
-    updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Data e hora da última atualização
+CREATE TABLE customer (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    user_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    income VARCHAR(100) NOT NULL,
+    favorite_bank VARCHAR(100) NOT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL
 );
+
 
 CREATE TABLE invoice_request
 (

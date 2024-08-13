@@ -1,13 +1,11 @@
 -- Inserindo dados na tabela customer
-INSERT INTO customer (first_name, last_name, email, phone_number, address, city, state, postal_code, country)
-VALUES ('John', 'Doe', 'johndoe@example.com', '123-456-7890', '123 Elm Street', 'Springfield', 'IL', '62701', 'USA'),
-       ('Jane', 'Smith', 'janesmith@example.com', '234-567-8901', '456 Oak Avenue', 'Metropolis', 'NY', '10001', 'USA'),
-       ('Alice', 'Johnson', 'alicejohnson@example.com', '345-678-9012', '789 Pine Road', 'Gotham', 'NJ', '07001',
-        'USA'),
-       ('Bob', 'Williams', 'bobwilliams@example.com', '456-789-0123', '101 Maple Lane', 'Star City', 'CA', '90001',
-        'USA'),
-       ('Charlie', 'Brown', 'charliebrown@example.com', '567-890-1234', '202 Birch Street', 'Smallville', 'TX', '75001',
-        'USA');
+INSERT INTO customer (first_name, last_name, user_name, email, password, income, favorite_bank, created_at, updated_at)
+VALUES
+('John', 'Doe', 'johndoe123', 'johndoe@example.com', 'securepassword123', '75000', 'Bank of Example', NOW(), NOW()),
+('Jane', 'Smith', 'janesmith456', 'janesmith@example.com', 'securepassword456', '85000', 'Another Bank', NOW(), NOW()),
+('Alice', 'Johnson', 'alicejohnson789', 'alicejohnson@example.com', 'securepassword789', '95000', 'Example Bank', NOW(), NOW()),
+('Bob', 'Williams', 'bobwilliams101', 'bobwilliams@example.com', 'securepassword101', '70000', 'Sample Bank', NOW(), NOW()),
+('Charlie', 'Brown', 'charliebrown202', 'charliebrown@example.com', 'securepassword202', '80000', 'Test Bank', NOW(), NOW());
 
 INSERT INTO invoice_request (customer_id, status, amount, token_count)
 VALUES
