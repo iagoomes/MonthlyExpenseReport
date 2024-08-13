@@ -1,21 +1,16 @@
 package br.com.postech.grupo7.monthlyexpensereport.domain.file.server;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice.request.InvoiceRequest;
+import br.com.postech.grupo7.monthlyexpensereport.domain.customer.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfReader;
 import com.itextpdf.kernel.pdf.canvas.parser.PdfTextExtractor;
@@ -27,19 +22,23 @@ import lombok.RequiredArgsConstructor;
 public class FileServerService {
 
     static final Integer MAX_SIZE = 5 * 1024 * 1024; // Default size is 5MB
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
     private final FileServerRepository fileServerRepository;
+    private final CustomerService customerService;
 
-    public FileServer saveFile(FileServer file) {
-        return fileServerRepository.save(file);
+    public ResponseEntity<String> savePDF(Integer customerId, MultipartFile file) throws IOException {
+        final Customer customer = customerService.getCustomerById(customerId);
+        validPdf(file);
+        String content = getContent(file);
+        FileServer attachment = new FileServer(file.getOriginalFilename(), content, customer);
+        fileServerRepository.save(attachment);
+        return ResponseEntity.ok("Arquivo salvo com sucesso!");
     }
 
     public FileServer getFileById(Integer id) {
         return fileServerRepository.findById(id).orElseThrow(() -> new RuntimeException("File not found"));
     }
 
-    public String convertPdfToStringfyJson(MultipartFile file) throws IOException {
+    public String getContent(MultipartFile file) throws IOException {
         PdfDocument pdfDocument = new PdfDocument(new PdfReader(file.getInputStream()));
         StringBuilder content = new StringBuilder();
 
@@ -48,24 +47,19 @@ public class FileServerService {
         }
 
         pdfDocument.close();
-
         return processContent(content.toString());
     }
 
-    public String validAndConvertPdfToStringfyJson(final MultipartFile file) throws IOException {
-        // Verificar se o arquivo é um PDF
+    public void validPdf(final MultipartFile file) throws IOException {
         if (file.isEmpty()) {
             throw new IOException("O arquivo está em branco!");
         }
-        if (!file.getContentType().equals("application/pdf")) {
+        if (!Objects.equals(file.getContentType(), "application/pdf")) {
             throw new IOException("O arquivo deve ser um PDF!");
         }
         if (file.getSize() > MAX_SIZE) {
             throw new IOException("O arquivo ultrapassou o limite máximo de 30mb!");
         }
-
-        // Converter PDF para JSON Stringfy
-        return convertPdfToStringfyJson(file);
     }
 
     public String processContent(String content) {
@@ -77,22 +71,10 @@ public class FileServerService {
             builder.append(matcher.group()).append(";\n");
         }
 
-        // Removendo o último ponto-e-vírgula, se necessário
-        if (builder.length() > 0) {
+        if (!builder.isEmpty()) {
             builder.setLength(builder.length() - 2); // Remove o "; "
         }
 
-        // String final para inserção no banco de dados
-        String finalResult = builder.toString();
-
-        return finalResult;
+        return builder.toString();
     }
-
-    private String createJSONObject(final String key, final String value) throws IOException {
-        // Criar um mapa com o texto extraído
-        Map<String, String> pdfContent = new HashMap<>();
-        pdfContent.put(key, value.toString());
-        return objectMapper.writeValueAsString(pdfContent);
-    }
-
 }
