@@ -1,4 +1,4 @@
-package br.com.postech.grupo7.monthlyexpensereport.domain.validation_engine;
+package br.com.postech.grupo7.monthlyexpensereport.domain.file_server;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -18,19 +18,19 @@ import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ValidationEngineService {
+public class FileServerService {
 
     static final Integer MAX_SIZE = 5 * 1024 * 1024; // Default size is 5MB
 
     private final ObjectMapper objectMapper = new ObjectMapper();
-    private final ValidationEngineRepository validationEngineRepository;
+    private final FileServerRepository fileServerRepository;
 
-    public ValidationEngine saveCustomer(ValidationEngine validationEngine) {
-        return validationEngineRepository.save(validationEngine);
+    public FileServer saveFile(FileServer file) {
+        return fileServerRepository.save(file);
     }
 
-    public ValidationEngine getCustomerById(Integer id) {
-        return validationEngineRepository.findById(id).orElseThrow(() -> new RuntimeException("Customer not found"));
+    public FileServer getFileById(Integer id) {
+        return fileServerRepository.findById(id).orElseThrow(() -> new RuntimeException("File not found"));
     }
 
     public String convertPdfToStringfyJson(final byte[] pdfBytes) throws IOException {
