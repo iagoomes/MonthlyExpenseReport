@@ -3,9 +3,15 @@ package br.com.postech.grupo7.monthlyexpensereport.domain.file.server;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
+import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice.request.InvoiceRequest;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,22 +39,17 @@ public class FileServerService {
         return fileServerRepository.findById(id).orElseThrow(() -> new RuntimeException("File not found"));
     }
 
-    public String convertPdfToStringfyJson(final byte[] pdfBytes) throws IOException {
-        try (InputStream pdfInputStream = new ByteArrayInputStream(pdfBytes)) {
-            // Extrair texto do PDF
-            PdfDocument pdfDoc = new PdfDocument(new PdfReader(pdfInputStream));
-            StringBuilder text = new StringBuilder();
+    public String convertPdfToStringfyJson(MultipartFile file) throws IOException {
+        PdfDocument pdfDocument = new PdfDocument(new PdfReader(file.getInputStream()));
+        StringBuilder content = new StringBuilder();
 
-            for (int i = 1; i <= pdfDoc.getNumberOfPages(); i++) {
-                text.append(PdfTextExtractor.getTextFromPage(pdfDoc.getPage(i)));
-            }
-
-            pdfDoc.close();
-
-            return createJSONObject("content", text.toString());
-        } catch (Exception e) {
-            throw new IOException(e.getMessage());
+        for (int i = 1; i <= pdfDocument.getNumberOfPages(); i++) {
+            content.append(PdfTextExtractor.getTextFromPage(pdfDocument.getPage(i))).append("\n");
         }
+
+        pdfDocument.close();
+
+        return processContent(content.toString());
     }
 
     public String validAndConvertPdfToStringfyJson(final MultipartFile file) throws IOException {
@@ -64,7 +65,27 @@ public class FileServerService {
         }
 
         // Converter PDF para JSON Stringfy
-        return convertPdfToStringfyJson(file.getBytes());
+        return convertPdfToStringfyJson(file);
+    }
+
+    public String processContent(String content) {
+        StringBuilder builder = new StringBuilder();
+        Pattern pattern = Pattern.compile("(\\d{2} \\w{3}) (.+?)(?: - (\\d+/\\d+))? (\\d{1,3},\\d{2})");
+        Matcher matcher = pattern.matcher(content);
+
+        while (matcher.find()) {
+            builder.append(matcher.group()).append(";\n");
+        }
+
+        // Removendo o último ponto-e-vírgula, se necessário
+        if (builder.length() > 0) {
+            builder.setLength(builder.length() - 2); // Remove o "; "
+        }
+
+        // String final para inserção no banco de dados
+        String finalResult = builder.toString();
+
+        return finalResult;
     }
 
     private String createJSONObject(final String key, final String value) throws IOException {

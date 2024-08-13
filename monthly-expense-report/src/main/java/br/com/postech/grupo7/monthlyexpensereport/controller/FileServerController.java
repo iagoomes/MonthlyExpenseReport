@@ -6,11 +6,7 @@ import java.nio.charset.StandardCharsets;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import br.com.postech.grupo7.monthlyexpensereport.domain.customer.Customer;
@@ -28,8 +24,8 @@ public class FileServerController {
     private static final Charset UTF8_CHARSET = StandardCharsets.UTF_8;
 
     private final CustomerService customerService;
-    private final FileServerService validationEngineService;
-    private final FileServerRepository validationEngineRepository;
+    private final FileServerService fileServerService;
+    private final FileServerRepository fileServerRepository;
 
     // Upload de arquivo
     @PostMapping("/upload/{customerId}")
@@ -37,13 +33,12 @@ public class FileServerController {
             @PathVariable Integer customerId) {
         try {
             final Customer customer = customerService.getCustomerById(customerId);
-            final String stringfyJSON = validationEngineService.validAndConvertPdfToStringfyJson(file);
+            final String stringfyJSON = fileServerService.validAndConvertPdfToStringfyJson(file);
 
-            FileServer attachment = new FileServer(file.getOriginalFilename(), stringfyJSON.getBytes(
-                    UTF8_CHARSET),
+            FileServer attachment = new FileServer(file.getOriginalFilename(), stringfyJSON,
                     customer);
 
-            validationEngineRepository.save(attachment);
+            fileServerRepository.save(attachment);
 
             return ResponseEntity.ok("Arquivo salvo com sucesso!");
         } catch (IOException e) {
@@ -51,4 +46,9 @@ public class FileServerController {
         }
     }
 
+    @GetMapping("/file/{id}")
+    public ResponseEntity<String> getFille(@PathVariable Integer id) {
+        FileServer fileServer = fileServerRepository.findById(id).orElseThrow(RuntimeException::new);
+        return ResponseEntity.ok(fileServer.getData());
+    }
 }

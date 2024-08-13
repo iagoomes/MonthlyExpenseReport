@@ -34,7 +34,7 @@ public class FileServer {
     private String name;
 
     @Column(name = "data", columnDefinition = "BLOB")
-    private byte[] data;
+    private String data;
 
     private LocalDateTime createdAt;
 
@@ -44,7 +44,7 @@ public class FileServer {
         this.createdAt = null;
     }
 
-    public FileServer(String name, byte[] data, Customer customer) {
+    public FileServer(String name, String data, Customer customer) {
         this.name = name;
         this.data = data;
         this.customer = customer;

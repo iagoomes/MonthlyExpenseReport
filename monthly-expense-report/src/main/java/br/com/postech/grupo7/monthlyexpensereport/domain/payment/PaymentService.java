@@ -39,8 +39,8 @@ public class PaymentService {
         final Customer customer = customerService.getCustomerById(invoiceRequestDTO.getCustomerId());
         final FileServer file = fileServerService.getFileById(invoiceRequestDTO.getArchiveId());
 
-        if (file.getData().length > 0) {
-            final int tokens = openAIService.countTokens(decodeUTF8(file.getData()));
+        if (file.getData() != null) {
+            final int tokens = openAIService.countTokens(decodeUTF8(file.getData().getBytes()));
 
             if (tokens > 0) {
                 final InvoiceRequest invoiceRequest = new InvoiceRequest(invoiceRequestDTO, customer, tokens);
