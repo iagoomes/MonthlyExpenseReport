@@ -1,6 +1,5 @@
 package br.com.postech.grupo7.monthlyexpensereport.domain.payment;
 
-import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoiceRequest.InvoiceRequest;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,6 +7,8 @@ import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import br.com.postech.grupo7.monthlyexpensereport.domain.payment.invoice.request.InvoiceRequest;
 
 @Data
 @Entity

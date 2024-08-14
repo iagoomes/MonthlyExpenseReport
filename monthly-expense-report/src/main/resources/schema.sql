@@ -43,8 +43,45 @@ CREATE TABLE payment
     FOREIGN KEY (invoice_request_id) REFERENCES invoice_request (id) ON DELETE CASCADE -- Relacionamento com a tabela invoice_request
 );
 
+-- Criando tabela validation_engine
+CREATE TABLE file_server
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    -- Identificador único da requisição
+    customer_id INT          NOT NULL,
+    name        VARCHAR(255) NOT NULL,
+    data        BLOB         NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE -- Relacionamento com a tabela customer
+);
+
 
 -- Criando índices para melhorar a performance
 CREATE INDEX idx_customer_email ON customer (email);
 CREATE INDEX idx_invoice_request_status ON invoice_request (status);
 CREATE INDEX idx_payment_invoice_request_id ON payment (invoice_request_id);
+CREATE INDEX idx_validation_engine_request_id ON file_server (customer_id);
+
+-- Tabela para armazenar as transações categorizadas
+CREATE TABLE categorized_transactions
+(
+    id INT AUTO_INCREMENT PRIMARY KEY
+);
+
+-- Tabela para armazenar as transações
+CREATE TABLE transactions
+(
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    date_transaction    VARCHAR(10)  NOT NULL,
+    description         VARCHAR(255) NOT NULL,
+    value_transaction   VARCHAR(20)  NOT NULL,
+    installment_current INT          NOT NULL,
+    installment_total   INT          NOT NULL,
+    category            VARCHAR(50)  NOT NULL,
+    categorized_transactions_id int not null,
+    FOREIGN KEY (categorized_transactions_id) REFERENCES categorized_transactions(id) ON DELETE CASCADE
+
+);
+
+
+
