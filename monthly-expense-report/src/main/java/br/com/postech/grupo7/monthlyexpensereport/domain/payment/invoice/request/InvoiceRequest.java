@@ -44,11 +44,10 @@ public class InvoiceRequest {
     @Column(name = "token_count", nullable = false)
     private Integer tokenCount = 0;
 
-    public InvoiceRequest(
-            final InvoiceRequestDTO invoiceRequestDTO, final Customer customer, final Integer tokenCount) {
+    public InvoiceRequest(final String analysisResults, final Customer customer, final Integer tokenCount) {
         this.customer = customer;
-        this.analysisResults = invoiceRequestDTO.getAnalysisResults() == null ? null
-                : invoiceRequestDTO.getAnalysisResults();
+        this.analysisResults = this.analysisResults;// invoiceRequestDTO.getAnalysisResults() == null ? null :
+                                                    // invoiceRequestDTO.getAnalysisResults();
         this.submittedAt = LocalDate.now();
         this.tokenCount = tokenCount;
     }

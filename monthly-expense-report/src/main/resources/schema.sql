@@ -1,19 +1,17 @@
 -- Criando tabela customer
-CREATE TABLE customer
-(
-    id           INT AUTO_INCREMENT PRIMARY KEY,                                 -- Identificador único do cliente
-    first_name   VARCHAR(50)  NOT NULL,                                          -- Nome do cliente
-    last_name    VARCHAR(50)  NOT NULL,                                          -- Sobrenome do cliente
-    email        VARCHAR(100) NOT NULL UNIQUE,                                   -- E-mail do cliente, único
-    phone_number VARCHAR(20),                                                    -- Número de telefone do cliente
-    address      VARCHAR(255),                                                   -- Endereço completo do cliente
-    city         VARCHAR(50),                                                    -- Cidade do cliente
-    state        VARCHAR(50),                                                    -- Estado do cliente
-    postal_code  VARCHAR(20),                                                    -- Código postal do cliente
-    country      VARCHAR(50),                                                    -- País do cliente
-    created_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP,                            -- Data e hora de criação
-    updated_at   TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP -- Data e hora da última atualização
+CREATE TABLE customer (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    first_name VARCHAR(50) NOT NULL,
+    last_name VARCHAR(50) NOT NULL,
+    user_name VARCHAR(50) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL,
+    income VARCHAR(100) NOT NULL,
+    favorite_bank VARCHAR(100) NOT NULL,
+    created_at DATETIME NOT NULL,
+    updated_at DATETIME NOT NULL
 );
+
 
 CREATE TABLE invoice_request
 (
@@ -46,13 +44,14 @@ CREATE TABLE payment
 );
 
 -- Criando tabela validation_engine
-CREATE TABLE file_server (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE file_server
+(
+    id          INT AUTO_INCREMENT PRIMARY KEY,
     -- Identificador único da requisição
-    customer_id      INT            NOT NULL,    
-    name VARCHAR(255) NOT NULL,
-    data BLOB NOT NULL,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    customer_id INT          NOT NULL,
+    name        VARCHAR(255) NOT NULL,
+    data        BLOB         NOT NULL,
+    created_at  TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES customer (id) ON DELETE CASCADE -- Relacionamento com a tabela customer
 );
 
@@ -62,3 +61,27 @@ CREATE INDEX idx_customer_email ON customer (email);
 CREATE INDEX idx_invoice_request_status ON invoice_request (status);
 CREATE INDEX idx_payment_invoice_request_id ON payment (invoice_request_id);
 CREATE INDEX idx_validation_engine_request_id ON file_server (customer_id);
+
+-- Tabela para armazenar as transações categorizadas
+CREATE TABLE categorized_transactions
+(
+    id INT AUTO_INCREMENT PRIMARY KEY
+);
+
+-- Tabela para armazenar as transações
+CREATE TABLE transactions
+(
+    id                  INT AUTO_INCREMENT PRIMARY KEY,
+    date_transaction    VARCHAR(10)  NOT NULL,
+    description         VARCHAR(255) NOT NULL,
+    value_transaction   VARCHAR(20)  NOT NULL,
+    installment_current INT          NOT NULL,
+    installment_total   INT          NOT NULL,
+    category            VARCHAR(50)  NOT NULL,
+    categorized_transactions_id int not null,
+    FOREIGN KEY (categorized_transactions_id) REFERENCES categorized_transactions(id) ON DELETE CASCADE
+
+);
+
+
+

@@ -66,7 +66,12 @@ public class FileServerService {
     public String processContent(String content) {
         StringBuilder builder = new StringBuilder();
         Pattern pattern = Pattern.compile("(\\d{2} \\w{3}) (.+?)(?: - (\\d+/\\d+))? (\\d{1,3},\\d{2})");
+        Pattern pattern2 = Pattern.compile("(\\d{2} \\w{3})\\n(.+? - Parcela \\d+/\\d+ R\\$ \\d{1,3},\\d{2})");
+
         Matcher matcher = pattern.matcher(content);
+        if (!matcher.find()) {
+            matcher = pattern2.matcher(content);
+        }
 
         while (matcher.find()) {
             builder.append(matcher.group()).append(";\n");

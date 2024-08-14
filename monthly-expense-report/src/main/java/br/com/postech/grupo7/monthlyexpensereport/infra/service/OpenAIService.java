@@ -2,16 +2,20 @@ package br.com.postech.grupo7.monthlyexpensereport.infra.service;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
+import br.com.postech.grupo7.monthlyexpensereport.domain.transacition.CategorizedTransactionsDTO;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.theokanning.openai.completion.chat.ChatCompletionChoice;
+import com.theokanning.openai.completion.chat.ChatCompletionRequest;
+import com.theokanning.openai.completion.chat.ChatMessage;
+import com.theokanning.openai.completion.chat.ChatMessageRole;
+import com.theokanning.openai.service.OpenAiService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,84 +30,110 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class OpenAIService {
 
-        @Value("${openai.api.key}")
-        private String apiKey;
+    @Value("${openai.api.key}")
+    private String apiKey;
 
-        @Value("${openai.api.url}")
-        private String apiOpenAIUrl;
+    @Value("${openai.api.url}")
+    private String apiOpenAIUrl;
 
-        @Value("${apicotacoes.api.url}")
-        private String apiCotacoesUrl;
+    @Value("${apicotacoes.api.url}")
+    private String apiCotacoesUrl;
 
-        private final RestTemplate restTemplate = new RestTemplate();
+    ObjectMapper objectMapper = new ObjectMapper();
 
-        private static final Pattern TOKEN_PATTERN = Pattern.compile("\\s*(\\S+)\\s*");
+    private final RestTemplate restTemplate = new RestTemplate();
 
-        private final ObjectMapper objectMapper = new ObjectMapper();
+    private static final Pattern TOKEN_PATTERN = Pattern.compile("\\s*(\\S+)\\s*");
 
-        public String getChatGPTResponse(String userPrompt) {
-                final String role = "Dado que você é um gerente financeiro de uma grande e importante empresa";
-                final String content = "Retorne os dados abaixos agrupados e categorizados com as descrições, valores e datas em formato json: \n "
-                                + userPrompt;
-                final JSONArray messages = new JSONArray()
-                                .put(new JSONObject()
-                                                .put("role", role)
-                                                .put("content", content));
+    public CategorizedTransactionsDTO getChatGPTResponse(String userPrompt) throws JsonProcessingException {
+        var user = "Analise a fatura do cartão de crédito e categorize as transações:\n" +
+                userPrompt;
+        var system = "Você é um analista de fatura de cartão de credito ou debito e categorizar e separar detalhadadamente as trações." +
+                "#############################" +
+                "Sua resposta deve seguir o seguinte padrão:\n" +
+                "{\n" +
+                "  \"categorized_transactions\": [\n" +
+                "    {\n" +
+                "      \"date\": \"02 JUL\",\n" +
+                "      \"description\": \"Dentista\",\n" +
+                "      \"value\": \"105,00\",\n" +
+                "      \"installment_current\": 3,\n" +
+                "      \"installment_total\": 4,\n" +
+                "      \"category\": \"Saúde\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"date\": \"02 JUL\",\n" +
+                "      \"description\": \"Karisma Noivas\",\n" +
+                "      \"value\": \"90,00\",\n" +
+                "      \"installment_current\": 2,\n" +
+                "      \"installment_total\": 3,\n" +
+                "      \"category\": \"Casamento\"\n" +
+                "    },\n" +
+                "    {\n" +
+                "      \"date\": \"02 JUL\",\n" +
+                "      \"description\": \"AUDI | Freios traseiros\",\n" +
+                "      \"value\": \"89,92\",\n" +
+                "      \"installment_current\": 8,\n" +
+                "      \"installment_total\": 10,\n" +
+                "      \"category\": \"Transporte\"\n" +
+                "    },\n" +
+                "    // Mais transações categorizadas aqui...\n" +
+                "  ]\n" +
+                "}";
 
-                // Criando o corpo da requisição JSON
-                final JSONObject request = new JSONObject();
-                request.put("model", "gpt-3.5-turbo");
-                request.put("messages", messages);
-                request.put("temperature", 0.8);
-                request.put("max_tokens", 100);
-                request.put("top_p", 1);
+        OpenAiService service = new OpenAiService(apiKey);
+        var completionRequest = ChatCompletionRequest
+                .builder()
+                .model("gpt-3.5-turbo")
+                .messages(Arrays.asList(
+                        new ChatMessage(ChatMessageRole.USER.value(), user),
+                        new ChatMessage(ChatMessageRole.SYSTEM.value(), system)))
+                .build();
 
-                final HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
-                headers.set("Authorization", "Bearer " + apiKey);
+        List<ChatCompletionChoice> choices = service.createChatCompletion(completionRequest)
+                .getChoices();
 
-                final HttpEntity<String> requestEntity = new HttpEntity<>(request.toString(), headers);
-                final ResponseEntity<String> response = restTemplate.exchange(
-                                apiOpenAIUrl, HttpMethod.POST, requestEntity,
-                                String.class);
-
-                // Extraindo a resposta do corpo
-                return response.getBody();
+        CategorizedTransactionsDTO categorizedTransactionsDTO = null;
+        for (ChatCompletionChoice choice : choices) {
+            categorizedTransactionsDTO = objectMapper.readValue(choice.getMessage().getContent(), CategorizedTransactionsDTO.class);
         }
 
-        public JsonNode getUSDtoBRL() {
-                final HttpHeaders headers = new HttpHeaders();
-                headers.setContentType(MediaType.APPLICATION_JSON);
+        return categorizedTransactionsDTO;
+    }
 
-                ResponseEntity<String> response = restTemplate.getForEntity(apiCotacoesUrl, String.class);
+    public JsonNode getUSDtoBRL() {
+        final HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
 
-                try {
-                        return objectMapper.readTree(response.getBody()).get("USDBRL");
-                } catch (Exception e) {
-                        throw new RuntimeException("Failed to parse JSON response", e);
-                }
+        ResponseEntity<String> response = restTemplate.getForEntity(apiCotacoesUrl, String.class);
+
+        try {
+            return objectMapper.readTree(response.getBody()).get("USDBRL");
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to parse JSON response", e);
         }
+    }
 
-        public List<String> tokenize(String text) {
-                List<String> tokens = new ArrayList<>();
-                Matcher matcher = TOKEN_PATTERN.matcher(text);
-                while (matcher.find()) {
-                        String token = matcher.group(1);
-                        tokens.add(token);
-                }
-                return tokens;
+    public List<String> tokenize(String text) {
+        List<String> tokens = new ArrayList<>();
+        Matcher matcher = TOKEN_PATTERN.matcher(text);
+        while (matcher.find()) {
+            String token = matcher.group(1);
+            tokens.add(token);
         }
+        return tokens;
+    }
 
-        public int countTokens(String text) {
-                List<String> tokens = tokenize(text);
-                return tokens.size();
-        }
+    public int countTokens(String text) {
+        List<String> tokens = tokenize(text);
+        return tokens.size();
+    }
 
-        public BigDecimal tokenPriceBRL() {
-                final Double cotacao = getUSDtoBRL().get("high").asDouble();
-                final Double tokenPriceUSD = 0.0005;
-                final Double tokenPriceBRL = tokenPriceUSD * cotacao;
-                return BigDecimal.valueOf(tokenPriceBRL);
-        }
+    public BigDecimal tokenPriceBRL() {
+        final Double cotacao = getUSDtoBRL().get("high").asDouble();
+        final Double tokenPriceUSD = 0.0005;
+        final Double tokenPriceBRL = tokenPriceUSD * cotacao;
+        return BigDecimal.valueOf(tokenPriceBRL);
+    }
 
 }

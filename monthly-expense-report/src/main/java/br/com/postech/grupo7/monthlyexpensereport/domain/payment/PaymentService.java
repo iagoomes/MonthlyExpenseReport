@@ -43,7 +43,8 @@ public class PaymentService {
             final int tokens = openAIService.countTokens(decodeUTF8(file.getData().getBytes()));
 
             if (tokens > 0) {
-                final InvoiceRequest invoiceRequest = new InvoiceRequest(invoiceRequestDTO, customer, tokens);
+                final InvoiceRequest invoiceRequest = new InvoiceRequest(invoiceRequestDTO.getAnalysisResults(),
+                        customer, tokens);
                 invoiceRequest.setAmount(calculatePayment(tokenBRLPrice, tokens));
                 invoiceRequestRepository.save(invoiceRequest);
                 return ResponseEntity.ok()
